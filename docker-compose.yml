@@ -9,18 +9,18 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false # Desabilita segurança X-Pack para desenvolvimento
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Aloca memória para a JVM do Elasticsearch
     ulimits:
-      memlock:
+      memlock: # Necessário para bootstrap.memory_lock=true
         soft: -1
         hard: -1
     volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-data:/usr/share/elasticsearch/data # Persistência dos dados do Elasticsearch
     ports:
       - "9210:9200"
     networks:
-      - elastic
+      - elastic # Conecta o Elasticsearch à rede 'elastic'
 
   kibana:
     image: docker.elastic.co/kibana/kibana:9.1.0
@@ -28,17 +28,38 @@ services:
     ports:
       - "5611:5601"
     environment:
+      # Kibana se conecta ao Elasticsearch usando o nome do serviço na rede Docker
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
-      - elasticsearch
+      - elasticsearch # Garante que o Elasticsearch inicie antes do Kibana
+    networks:
+      - elastic # Conecta o Kibana à rede 'elastic'
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.0
+    container_name: keycloak # Boa prática para nomear o contêiner
+    ports:
+      - "9090:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB:  dev-file # Usa banco de dados H2 em arquivo (apenas para desenvolvimento!)
+    volumes:
+      - keycloak-data:/opt/keycloak/data # Persistência dos dados do Keycloak
+    command: # Comando para iniciar o Keycloak em modo de desenvolvimento
+      - start-dev
+    # MELHORIA: Conectar o Keycloak à mesma rede 'elastic'
+    # Isso permite que ele possa se comunicar facilmente com outros serviços (como sua aplicação principal)
+    # se eles também estiverem nessa rede.
     networks:
       - elastic
 
 volumes:
-  elasticsearch-data:
+  elasticsearch-data: # Volume para dados do Elasticsearch
+    driver: local
+  keycloak-data:
     driver: local
 
 networks:
-  elastic:
+  elastic: # Rede personalizada para os serviços se comunicarem
     driver: bridge
-
