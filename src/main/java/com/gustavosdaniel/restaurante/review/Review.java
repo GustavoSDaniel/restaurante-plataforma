@@ -39,6 +39,6 @@ public class Review {
     private List<Photo> photos = new ArrayList<>();
 
     @Field(type = FieldType.Nested)
-    private User writterBy
+    private User writterBy;
 
 }
