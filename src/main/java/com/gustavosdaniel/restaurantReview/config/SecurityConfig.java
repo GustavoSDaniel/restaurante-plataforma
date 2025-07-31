@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante.config;
+package com.gustavosdaniel.restaurantReview.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

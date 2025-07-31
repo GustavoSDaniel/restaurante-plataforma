@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante.user;
+package com.gustavosdaniel.restaurantReview.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

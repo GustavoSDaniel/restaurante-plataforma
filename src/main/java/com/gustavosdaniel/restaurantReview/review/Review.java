@@ -1,7 +1,7 @@
-package com.gustavosdaniel.restaurante.review;
+package com.gustavosdaniel.restaurantReview.review;
 
-import com.gustavosdaniel.restaurante.photo.Photo;
-import com.gustavosdaniel.restaurante.user.User;
+import com.gustavosdaniel.restaurantReview.photo.Photo;
+import com.gustavosdaniel.restaurantReview.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

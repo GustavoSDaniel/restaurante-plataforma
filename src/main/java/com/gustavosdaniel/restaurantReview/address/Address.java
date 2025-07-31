@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante.address;
+package com.gustavosdaniel.restaurantReview.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante.photo;
+package com.gustavosdaniel.restaurantReview.photo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante.timeRange;
+package com.gustavosdaniel.restaurantReview.timeRange;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

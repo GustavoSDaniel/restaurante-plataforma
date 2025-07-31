@@ -1,6 +1,6 @@
-package com.gustavosdaniel.restaurante.operatingHours;
+package com.gustavosdaniel.restaurantReview.operatingHours;
 
-import com.gustavosdaniel.restaurante.timeRange.TimeRange;
+import com.gustavosdaniel.restaurantReview.timeRange.TimeRange;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

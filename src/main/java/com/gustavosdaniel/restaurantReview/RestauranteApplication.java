@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante;
+package com.gustavosdaniel.restaurantReview;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

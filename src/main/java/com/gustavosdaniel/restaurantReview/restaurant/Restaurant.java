@@ -1,11 +1,11 @@
-package com.gustavosdaniel.restaurante.restaurant;
+package com.gustavosdaniel.restaurantReview.restaurant;
 
 import co.elastic.clients.elasticsearch._types.GeoBounds;
-import com.gustavosdaniel.restaurante.address.Address;
-import com.gustavosdaniel.restaurante.operatingHours.OperatingHours;
-import com.gustavosdaniel.restaurante.photo.Photo;
-import com.gustavosdaniel.restaurante.review.Review;
-import com.gustavosdaniel.restaurante.user.User;
+import com.gustavosdaniel.restaurantReview.address.Address;
+import com.gustavosdaniel.restaurantReview.operatingHours.OperatingHours;
+import com.gustavosdaniel.restaurantReview.photo.Photo;
+import com.gustavosdaniel.restaurantReview.review.Review;
+import com.gustavosdaniel.restaurantReview.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

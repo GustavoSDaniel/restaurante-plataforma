@@ -1,4 +1,4 @@
-package com.gustavosdaniel.restaurante;
+package com.gustavosdaniel.restaurantReview;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
