@@ -23,8 +23,8 @@ public class Review {
     @Field(type = FieldType.Keyword)
     private String id;
 
-    @Field(type = FieldType.Text)
-    private String content;
+    @Field(type = FieldType.Keyword)
+    private String comment;
 
     @Field(type = FieldType.Integer)
     private Integer rating;
@@ -38,7 +38,6 @@ public class Review {
     @Field(type = FieldType.Nested)
     private List<Photo> photos = new ArrayList<>();
 
-    @Field(type = FieldType.Nested)
-    private User writterBy;
+    private User writtenBy;
 
 }
