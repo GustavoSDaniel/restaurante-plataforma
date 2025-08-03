@@ -15,6 +15,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.GeoPointField;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class Restaurant {
     private Float averageRating;
 
     @GeoPointField
-    private GeoBounds geoLocation;
+    private GeoPoint geoLocation;
 
     @Field(type = FieldType.Nested)
     private Address address;

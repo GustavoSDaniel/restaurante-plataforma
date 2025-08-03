@@ -1,9 +1,13 @@
 package com.gustavosdaniel.restaurantReview.restaurant;
 
+import com.gustavosdaniel.restaurantReview.address.Address;
+import com.gustavosdaniel.restaurantReview.operatingHours.OperatingHours;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +17,9 @@ public class RestaurantCreateUpdateRequest {
 
     private String name;
     private String cuisineType;
-    private double latitude;
-    private double longitude;
+    private String contactInformation;
+    private Address address;
+    private OperatingHours operatingHours;
+    private List<String> photoIds;
+
 }
