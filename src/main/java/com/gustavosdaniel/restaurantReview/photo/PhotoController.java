@@ -33,21 +33,17 @@ public class PhotoController {
             return ResponseEntity.badRequest().build();
         }
 
-       try {
-           return photoService.getPhotoAsResource(id).map(photo ->
-                   ResponseEntity.ok()
-                           .contentType(
-                                   MediaTypeFactory.getMediaType(photo)
-                                           .orElse(MediaType.APPLICATION_OCTET_STREAM)
-                           )
-                           .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // para exibir a foto no navegador
-                           .body(photo)
+        return photoService.getPhotoAsResource(id).map(photo ->
+                ResponseEntity.ok()
+                        .contentType(
+                                MediaTypeFactory.getMediaType(photo)
+                                        .orElse(MediaType.APPLICATION_OCTET_STREAM)
+                        )
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // para exibir a foto no navegador
+                        .body(photo)
 
-           ).orElse(ResponseEntity.notFound().build());
-       } catch (Exception e) {
-           log.error("Error getting photo resource with ID {}",id, e);
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-       }
+        ).orElse(ResponseEntity.notFound().build());
+
 
 
     }
