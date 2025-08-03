@@ -2,6 +2,7 @@ package com.gustavosdaniel.restaurantReview.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,7 +19,11 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests.anyRequest().authenticated()) // todas as requisições devem ser autenticadas
+
+                authorizeRequests
+
+                        .requestMatchers(HttpMethod.GET, "/api/photos/**").permitAll()
+                        .anyRequest().authenticated()) // todas as requisições devem ser autenticadas
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtCustomizer ->
                                 jwtCustomizer.jwtAuthenticationConverter(jwtAuthenticationConverter())

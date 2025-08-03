@@ -1,9 +1,13 @@
 package com.gustavosdaniel.restaurantReview.photo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequestMapping(path = "/api/photos")
 @RequiredArgsConstructor
@@ -18,6 +22,33 @@ public class PhotoController {
         Photo savedPhoto = photoService.uploadPhoto(file);
 
         return photoMapper.toPhotoDTO(savedPhoto);
+
+    }
+
+    @GetMapping(path = "/{id:.+}")
+    public ResponseEntity<Resource> getPhoto(@PathVariable String id) {
+
+        if (id == null || id.trim().isEmpty() ||
+                id.contains("..") || id.contains("/") || id.contains("\\")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+       try {
+           return photoService.getPhotoAsResource(id).map(photo ->
+                   ResponseEntity.ok()
+                           .contentType(
+                                   MediaTypeFactory.getMediaType(photo)
+                                           .orElse(MediaType.APPLICATION_OCTET_STREAM)
+                           )
+                           .header(HttpHeaders.CONTENT_DISPOSITION, "inline") // para exibir a foto no navegador
+                           .body(photo)
+
+           ).orElse(ResponseEntity.notFound().build());
+       } catch (Exception e) {
+           log.error("Error getting photo resource with ID {}",id, e);
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+       }
+
 
     }
 }
