@@ -5,6 +5,8 @@ import com.gustavosdaniel.restaurantReview.geoLocation.GeoLocation;
 import com.gustavosdaniel.restaurantReview.geoLocation.GeoLocationService;
 import com.gustavosdaniel.restaurantReview.photo.Photo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +51,28 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         return restaurantRepository.save(restaurant);
 
+    }
+
+    @Override
+    public Page<Restaurant> searchRestaurant(
+            String query, Float minRating, Float latitude,
+            Float longitude, Float radius, Pageable pageable) {
+
+
+        if (minRating != null && (query == null || query.isEmpty())) { // busca será realizada exclusivamente pela avaliação mínima.
+            return restaurantRepository.findByAverageRatingGreaterThanEqual(minRating, pageable);
+        }
+
+        Float searchMinRating = null == minRating ? 0f : minRating;
+
+        if (query != null && !query.trim().isEmpty()) { // ele busca restaurantes que correspondam ao termo da query e  que também tenham uma avaliação igual ou superior a searchMinRating
+            return restaurantRepository.findByQueryAndMinRating(query, searchMinRating, pageable);
+        }
+
+        if (latitude != null && longitude != null) { // rocura restaurantes próximos a um ponto geográfico, com base em um radius (raio)
+            return restaurantRepository.findByLocationNear(latitude, longitude, radius, pageable);
+        }
+
+        return restaurantRepository.findAll(pageable);
     }
 }

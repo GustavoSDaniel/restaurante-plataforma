@@ -23,6 +23,7 @@ public class SecurityConfig {
                 authorizeRequests
 
                         .requestMatchers(HttpMethod.GET, "/api/photos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/restaurants/**").permitAll()
                         .anyRequest().authenticated()) // todas as requisições devem ser autenticadas
                 .oauth2ResourceServer(oauth2ResourceServer ->
                         oauth2ResourceServer.jwt(jwtCustomizer ->
