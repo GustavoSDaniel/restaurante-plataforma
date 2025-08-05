@@ -1,5 +1,6 @@
 package com.gustavosdaniel.restaurantReview.common;
 
+import com.gustavosdaniel.restaurantReview.restaurant.RestaurantNotFoundException;
 import com.gustavosdaniel.restaurantReview.storage.StorageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,18 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @Slf4j
 public class ErrorController {
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleRestaurantNotFoundException(RestaurantNotFoundException ex) {
+        log.error("Caught RestaurantNotFoundException", ex);
+
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message("The specified restaurant was not found")
+                .build();
+
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {

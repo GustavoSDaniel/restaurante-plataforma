@@ -83,4 +83,36 @@ public class RestaurantServiceImpl implements RestaurantService {
 
        return restaurantRepository.findById(id);
     }
+
+    @Override
+    public Restaurant updateRestaurant(String id, RestaurantCreateUpdateRequest restaurantCreateUpdateRequest) {
+
+        Restaurant restaurant = getRestaurant(id)
+                .orElseThrow(() -> new RestaurantNotFoundException("Restaurant with ID does not exist" + id));
+
+        GeoLocation newGeoLocation = geoLocationService.getGeoLocation(restaurantCreateUpdateRequest.getAddress());
+
+        GeoPoint newGeoPoint = new GeoPoint(newGeoLocation.getLatitude(), newGeoLocation.getLongitude());
+
+        List<String> photoIds = restaurantCreateUpdateRequest.getPhotoIds();
+
+        List<Photo> photos = photoIds.stream()
+                .map( photoUrl -> Photo.builder()
+                        .url(photoUrl)
+                        .uploadDate(LocalDateTime.now())
+                        .build())
+                .toList();
+
+        restaurant.setName(restaurantCreateUpdateRequest.getName());
+        restaurant.setCuisineType(restaurantCreateUpdateRequest.getCuisineType());
+        restaurant.setContactInformation(restaurantCreateUpdateRequest.getContactInformation());
+        restaurant.setAddress(restaurantCreateUpdateRequest.getAddress());
+        restaurant.setGeoLocation(newGeoPoint);
+        restaurant.setOperatingHours(restaurantCreateUpdateRequest.getOperatingHours());
+        restaurant.setPhotos(photos);
+
+        return restaurantRepository.save(restaurant);
+
+
+    }
 }
