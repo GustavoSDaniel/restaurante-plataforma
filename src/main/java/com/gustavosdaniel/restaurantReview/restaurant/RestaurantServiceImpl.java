@@ -7,11 +7,13 @@ import com.gustavosdaniel.restaurantReview.photo.Photo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -74,5 +76,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
 
         return restaurantRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Restaurant> getRestaurant(String id) {
+
+       return restaurantRepository.findById(id);
     }
 }
