@@ -1,6 +1,7 @@
 package com.gustavosdaniel.restaurantReview.common;
 
 import com.gustavosdaniel.restaurantReview.restaurant.RestaurantNotFoundException;
+import com.gustavosdaniel.restaurantReview.review.ReviewNotAllowedException;
 import com.gustavosdaniel.restaurantReview.storage.StorageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,18 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @Slf4j
 public class ErrorController {
+
+    @ExceptionHandler(ReviewNotAllowedException.class)
+    public ResponseEntity<ErrorDTO> handleReviewNotAllowedException(ReviewNotAllowedException ex) {
+        log.error("Caught ReviewNotAllowedException", ex);
+
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("The specified review cannot be created or update ")
+                .build();
+
+        return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleRestaurantNotFoundException(RestaurantNotFoundException ex) {
