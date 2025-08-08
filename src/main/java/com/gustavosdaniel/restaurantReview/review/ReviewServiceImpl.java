@@ -7,6 +7,7 @@ import com.gustavosdaniel.restaurantReview.restaurant.RestaurantRepository;
 import com.gustavosdaniel.restaurantReview.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final RestaurantRepository restaurantRepository;
 
     @Override
+    @Transactional
     public Review createReview(
             User author, String restaurantId, ReviewCreateUpdateRequest reviewCreateUpdateRequest
     ) {
@@ -70,6 +72,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     private Restaurant getRestaurantOrThrow(String restaurantId) {
+
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException(
                         "Restaurant not found" + restaurantId));
