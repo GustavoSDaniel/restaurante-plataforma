@@ -3,6 +3,7 @@ package com.gustavosdaniel.restaurantReview.review;
 import com.gustavosdaniel.restaurantReview.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,7 +27,11 @@ public class ReviewController {
         ReviewCreateUpdateRequest reviewCreateUpdateRequest = reviewMapper
                 .toReviewCreateUpdateRequest(reviewCreateUpdateRequestDTO);
 
-        reviewService.createReview(jwt)
+        User user = jwtUser(jwt);
+
+       Review createdReview =  reviewService.createReview(user, restaurantsId, reviewCreateUpdateRequest);
+
+       return ResponseEntity.status(HttpStatus.CREATED).body(reviewMapper.toReviewDTO(createdReview));
     }
 
     private User jwtUser(Jwt jwt) {
