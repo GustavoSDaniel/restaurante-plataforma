@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequestMapping(path = "/api/restaurants/{restaurantsId}/reviews")
 @RestController
@@ -51,6 +52,17 @@ public class ReviewController {
                 .listReviews(restaurantsId, pageable)
                 .map(reviewMapper::toReviewDTO);
 
+    }
+
+    @GetMapping(path = "/{reviewsId}")
+    public ResponseEntity<ReviewDTO> getReview(
+            @PathVariable String restaurantsId,
+            @PathVariable String reviewsId
+    ){
+        return reviewService.getReview(restaurantsId, reviewsId)
+        .map(reviewMapper::toReviewDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build()); // orElseGet so vai se chamado se for nulo
     }
 
 

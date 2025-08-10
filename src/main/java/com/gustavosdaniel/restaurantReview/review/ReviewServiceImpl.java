@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -115,6 +112,20 @@ public class ReviewServiceImpl implements ReviewService{
             return new PageImpl<>(reviews.subList(start, end), pageable, reviews.size());
 
     }
+
+    @Override
+    public Optional<Review> getReview(String restaurantId, String reviewId) {
+
+        Restaurant restaurant = getRestaurantOrThrow(restaurantId);
+
+        return restaurant.getReviews()
+                .stream()
+                .filter(review -> reviewId.equals(review.getId()))
+                .findFirst(); // Pega a primeira avaliação que passar no filtro
+                            // Retorna um Optional<Review> - que pode conter a avaliação ou estar vazio se não encontrar
+    }
+
+
 
     private Restaurant getRestaurantOrThrow(String restaurantId) {
 
