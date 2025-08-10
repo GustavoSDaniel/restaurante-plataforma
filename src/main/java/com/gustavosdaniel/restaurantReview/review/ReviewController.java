@@ -1,8 +1,13 @@
 package com.gustavosdaniel.restaurantReview.review;
 
+import com.gustavosdaniel.restaurantReview.restaurant.RestaurantSummaryDTO;
 import com.gustavosdaniel.restaurantReview.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +39,21 @@ public class ReviewController {
        return ResponseEntity.status(HttpStatus.CREATED).body(reviewMapper.toReviewDTO(createdReview));
     }
 
+    @GetMapping
+    public Page<ReviewDTO> listReviews(
+            @PathVariable String restaurantsId,
+            @PageableDefault(size = 20,
+                    page = 0,
+                    sort = "datePosted",
+                    direction = Sort.Direction.DESC) Pageable pageable
+            ) {
+        return reviewService
+                .listReviews(restaurantsId, pageable)
+                .map(reviewMapper::toReviewDTO);
+
+    }
+
+
     private User jwtUser(Jwt jwt) {
         return User.builder()
                 .id(jwt.getSubject())
@@ -42,5 +62,7 @@ public class ReviewController {
                 .familyName(jwt.getClaimAsString("family_name"))
                 .build();
     }
+
+
 
 }
