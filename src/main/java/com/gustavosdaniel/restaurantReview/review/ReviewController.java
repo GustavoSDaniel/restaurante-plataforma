@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RequestMapping(path = "/api/restaurants/{restaurantsId}/reviews")
 @RestController
@@ -63,6 +62,23 @@ public class ReviewController {
         .map(reviewMapper::toReviewDTO)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build()); // orElseGet so vai se chamado se for nulo
+    }
+
+    @PutMapping(path = "/{reviewsId}")
+    public ResponseEntity<ReviewDTO> updateReview(
+            @PathVariable String restaurantsId,
+            @PathVariable String reviewsId,
+            @Valid @RequestBody ReviewCreateUpdateRequestDTO reviewCreateUpdateRequestDTO,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        ReviewCreateUpdateRequest reviewCreateUpdateRequest = reviewMapper
+                .toReviewCreateUpdateRequest(reviewCreateUpdateRequestDTO);
+
+        User user = jwtUser(jwt);
+
+        Review updateReview = reviewService.updateReview(restaurantsId, reviewsId, user, reviewCreateUpdateRequest);
+
+        return ResponseEntity.ok(reviewMapper.toReviewDTO(updateReview));
     }
 
 
