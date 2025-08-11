@@ -1,6 +1,5 @@
 package com.gustavosdaniel.restaurantReview.review;
 
-import com.gustavosdaniel.restaurantReview.restaurant.RestaurantSummaryDTO;
 import com.gustavosdaniel.restaurantReview.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +78,15 @@ public class ReviewController {
         Review updateReview = reviewService.updateReview(restaurantsId, reviewsId, user, reviewCreateUpdateRequest);
 
         return ResponseEntity.ok(reviewMapper.toReviewDTO(updateReview));
+    }
+
+    @DeleteMapping(path = "/{reviewsId}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable String restaurantsId,
+            @PathVariable String reviewsId
+    ){
+        reviewService.deleteReview(restaurantsId, reviewsId);
+        return ResponseEntity.noContent().build();
     }
 
 

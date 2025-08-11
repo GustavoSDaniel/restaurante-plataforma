@@ -179,7 +179,19 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void deleteReview(String restaurantId, String reviewId) {
 
+        Restaurant restaurant = getRestaurantOrThrow(restaurantId);
 
+        List<Review> filteredReviews = restaurant
+                .getReviews()
+                .stream()
+                .filter(review -> !reviewId.equals(review.getId()))
+                .toList();
+
+        restaurant.setReviews(filteredReviews);
+
+        updateRestaurantAverageRating(restaurant);
+
+        restaurantRepository.save(restaurant);
     }
 
 
